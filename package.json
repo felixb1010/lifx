@@ -3,7 +3,7 @@
   "name": "lifx",
   "title": "LIFX",
   "description": "Control your lifx lights with this extension",
-  "icon": "command-icon.png",
+  "icon": "lifx-extension-icon.png",
   "author": "felixb1010",
   "categories": [
     "Fun",
@@ -15,10 +15,62 @@
   "commands": [
     {
       "name": "index",
-      "title": "Turn on light",
-      "subtitle": "Toggle your main LIFX light",
-      "description": "Turns on the light to bright white",
+      "title": "View lights",
+      "subtitle": "LIFX",
+      "description": "Toggle lights on and off",
       "mode": "view"
+    },
+    {
+      "name": "setLightState",
+      "title": "Set light",
+      "subtitle": "LIFX",
+      "description": "Set the state of a light",
+      "mode": "no-view",
+      "arguments": [
+        {
+          "name": "color",
+          "placeholder": "Color",
+          "type": "text",
+          "required": false
+        },
+        {
+          "name": "brightness",
+          "placeholder": "Brightness",
+          "type": "text",
+          "default": "1.0"
+        },
+        {
+          "name": "power",
+          "placeholder": "Power",
+          "type": "text",
+          "default": "on"
+        }
+      ]
+    },
+    {
+      "name": "toggleLight",
+      "title": "Toggle light",
+      "subtitle": "LIFX",
+      "description": "Turn on or off on of your lifx light or lights",
+      "mode": "no-view",
+      "arguments": [
+        {
+          "name": "light",
+          "placeholder": "Light",
+          "type": "text",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "preferences": [
+    {
+      "name": "lifx_token",
+      "title": "LIFX Token",
+      "description": "Your LIFX token",
+      "type": "textfield",
+      "default": "Token",
+      "required": true
     }
   ],
   "dependencies": {
