@@ -4,3 +4,9 @@
 - Added `toggle light`command
 - Added `set light` command
 - added `view lights` command
+
+## Upcoming
+- local lan accses
+- scenes
+- animations
+- better error handling
