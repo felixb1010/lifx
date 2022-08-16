@@ -21,15 +21,13 @@ export default function Command() {
       style: Toast.Style.Animated,
       title: "Fetching lights",
     });
-    if (preferences.lifx_token) {
-    } else {
+    if (!preferences.lifx_token) {
       toast.style = Toast.Style.Failure;
       toast.title = "No token found";
       setIsLoading(false);
       return;
     }
-    if (cache.isEmpty) {
-    } else {
+    if (!cache.isEmpty) {
       setData(JSON.parse(cache.get("lights") || "[]"));
       setIsLoading(false);
       toast.style = Toast.Style.Success;
@@ -37,7 +35,7 @@ export default function Command() {
       return;
     }
     axios
-      .get("https://api.lifx.com/v1/lights/all", config,)
+      .get("https://api.lifx.com/v1/lights/all", config)
       .then((res) => {
         console.log(res.data);
         setData(res.data);
@@ -48,9 +46,9 @@ export default function Command() {
       })
       .catch((err) => {
         console.log(err.response);
-        toast.style = Toast.Style.Failure
-        toast.title = "Error"
-        setIsLoading(false)
+        toast.style = Toast.Style.Failure;
+        toast.title = "Error";
+        setIsLoading(false);
       });
   }
 
@@ -71,7 +69,7 @@ export default function Command() {
       })
       .catch((err) => {
         console.log(err.response);
-        console.log(err)
+        console.log(err);
         toast.style = Toast.Style.Failure;
         toast.title = "Failed to toggle light";
         toast.message = err.response?.data?.error || err;
@@ -106,7 +104,7 @@ export default function Command() {
   );
 }
 
-function generateMarkdown(light: any) {
+function generateMarkdown(light: Lights.Light) {
   const md = String.raw`
   # ${light.label}
   #### ${light.product.name}
