@@ -21,13 +21,6 @@
       "mode": "view"
     },
     {
-      "name": "setLightColor",
-      "title": "Set light color",
-      "subtitle": "LIFX",
-      "description": "Set the color of a light",
-      "mode": "view"
-    },
-    {
       "name": "setLightState",
       "title": "Set light",
       "subtitle": "LIFX",

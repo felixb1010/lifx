@@ -154,10 +154,9 @@ export default function setLightColor() {
   function formatColors() {
     setLoading(true);
     Object.keys(colours).forEach(function (key) {
-      console.log(key, colours[key]);
       colorArr.push({
         name: key,
-        value: colours[key],
+        value: "#ffffff",
       });
     });
     setColors(colorArr);
