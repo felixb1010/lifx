@@ -1,0 +1,3 @@
+- [x] Add api function for fetching lights
+- [x] Add checks for lights compatible with multicolor
+- [x] Add search feature for lights and scenes

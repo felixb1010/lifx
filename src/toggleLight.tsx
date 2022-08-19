@@ -1,18 +1,9 @@
-import { Toast, showToast, getPreferenceValues } from "@raycast/api";
-import axios from "axios";
+import { getPreferenceValues, showHUD } from "@raycast/api";
+import { toggleLight } from "./lib/api";
+import { Api } from "./lib/interfaces";
 
-interface ToggleLightArguments {
-  light: string;
-}
-
-export default async function ToggleLight(props: { arguments: ToggleLightArguments }) {
-  const { light } = props.arguments;
+export default async function ToggleLight() {
   const preferences = getPreferenceValues();
-  let chosenLight = light.toLowerCase();
-
-  if (light === "") {
-    chosenLight = "all";
-  }
 
   const config = {
     headers: {
@@ -20,30 +11,21 @@ export default async function ToggleLight(props: { arguments: ToggleLightArgumen
     },
   };
 
-  const toast = await showToast({
-    style: Toast.Style.Animated,
-    title: "Toggeling " + chosenLight,
-  });
-  try {
-    const response = await axios.post(`https://api.lifx.com/v1/lights/${chosenLight}/toggle`, {}, config);
-    console.log(response.data);
-    if (response.status === 200) {
-      toast.style = Toast.Style.Success;
-      toast.title = "Succses";
+  const body: Api.toggleLight = {
+    duration: 1,
+  };
+
+  try{
+    const response = await toggleLight("all", body, config);
+    await showHUD("Succses" + response.results[0].status);
+  } catch (error) {
+    console.info(error);
+    if(error instanceof Error) {
+      await showHUD(error.message)
     } else {
-      if (response.data.results[0].status === "ok") {
-        toast.style = Toast.Style.Success;
-        toast.title = chosenLight + " toggled " + response.data.results[0].power;
-      } else {
-        console.log(response.status);
-        throw "Failed to toggle light";
-      }
+      await showHUD("error not instance of Error")
     }
-  } catch (err) {
-    toast.style = Toast.Style.Failure;
-    toast.title = "Failed to update light";
-    toast.message = "Failure";
-    console.log(err);
-  }
+  } 
+
   return;
 }

@@ -15,52 +15,24 @@
   "commands": [
     {
       "name": "index",
-      "title": "View lights",
+      "title": "Manage Lights",
       "subtitle": "LIFX",
       "description": "Toggle lights on and off",
       "mode": "view"
     },
     {
-      "name": "setLightState",
-      "title": "Set light",
+      "name": "viewScenes",
+      "title": "Set Scene",
       "subtitle": "LIFX",
-      "description": "Set the state of a light",
-      "mode": "no-view",
-      "arguments": [
-        {
-          "name": "color",
-          "placeholder": "Color",
-          "type": "text",
-          "required": false
-        },
-        {
-          "name": "brightness",
-          "placeholder": "Brightness",
-          "type": "text",
-          "default": "1.0"
-        },
-        {
-          "name": "power",
-          "placeholder": "Power",
-          "type": "text",
-          "default": "on"
-        }
-      ]
+      "description": "Set the chosen scene",
+      "mode": "view"
     },
     {
       "name": "toggleLight",
-      "title": "Toggle light",
+      "title": "Toggle All lights",
       "subtitle": "LIFX",
       "description": "Turn on or off on of your lifx light or lights",
-      "mode": "no-view",
-      "arguments": [
-        {
-          "name": "light",
-          "placeholder": "Light",
-          "type": "text",
-          "required": false
-        }
-      ]
+      "mode": "no-view"
     }
   ],
   "preferences": [
@@ -75,7 +47,9 @@
   ],
   "dependencies": {
     "@raycast/api": "^1.38.3",
-    "axios": "^0.27.2"
+    "@raycast/utils": "^1.1.0",
+    "axios": "^0.27.2",
+    "kelvin-to-rgb": "^1.0.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.0.0",
