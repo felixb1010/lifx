@@ -8,9 +8,9 @@ import constants, { COLORS } from "./lib/constants";
 import { cleanLights, SetLightState, toggleLight } from "./lib/api";
 
 export default function Command() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<Lights.Light[]>([]);
-  const [sideBar, setSideBar] = useState(false);
+  const [sideBar, setSideBar] = useState<boolean>(false);
   const cache = new Cache();
   const preferences = getPreferenceValues();
 
@@ -18,7 +18,7 @@ export default function Command() {
     headers: {
       Authorization: "Bearer " + preferences.lifx_token,
     },
-    timeout: 7000,
+    timeout: 7000
   };
 
   async function fetchLights() {
@@ -32,13 +32,7 @@ export default function Command() {
       setIsLoading(false);
       return;
     }
-    if (!cache.isEmpty) {
-      setData(JSON.parse(cache.get("lights") || "[]"));
-      setIsLoading(false);
-      toast.style = Toast.Style.Success;
-      toast.title = "Lights fetched";
-      return;
-    }
+    
     axios
       .get("https://api.lifx.com/v1/lights/all", config)
       .then((res) => {
@@ -176,6 +170,7 @@ export default function Command() {
     <List isLoading={isLoading} isShowingDetail={sideBar} navigationTitle="Lights">
       {data.length === 0 ? (
         <List.EmptyView
+          key="empty"
           icon="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/144/apple/325/thinking-face_1f914.png"
           title="No lights found"
           description="Check if you have lights compatible with color"
