@@ -52,69 +52,75 @@ export namespace Lights {
 }
 
 export interface Color {
-  hue:        number;
+  hue: number;
   saturation: number;
-  kelvin:     number;
+  kelvin: number;
 }
 
-export namespace Api{
+export namespace Api {
+  export interface lightStateParam {
+    power?: string;
+    color?: string;
+    brightness?: number;
+    duration?: number;
+    infrared?: number;
+    fast?: boolean;
+  }
 
-export interface lightStateParam {
-  power?: string;
-  color?: string;
-  brightness?: number;
-  duration?: number;
-  infrared?: number;
-  fast?: boolean;
-}
+  export interface lightStateResult {
+    results: result[];
+  }
 
-export interface lightStateResult {
-  results: result[];
-}
+  export interface result {
+    id: string;
+    label: string;
+    status: string;
+  }
 
-export interface result {
-  id:     string;
-  label:  string;
-  status: string;
-}
+  export interface Error {
+    error: string;
+    errors: Error[];
+  }
 
-export interface Error {
-  error:  string;
-  errors: Error[];
-}
+  export interface errorItem {
+    field: string;
+    message: string[];
+  }
 
-export interface errorItem {
-  field:   string;
-  message: string[];
-}
+  export interface toggleLight {
+    duration: number;
+  }
 
-export interface toggleLight {
-  duration: number;
-}
+  export interface Scene {
+    uuid: string;
+    name: string;
+    account: Account;
+    states: State[];
+    created_at: number;
+    updated_at: number;
+  }
 
-export interface Scene {
-  uuid:       string;
-  name:       string;
-  account:    Account;
-  states:     State[];
-  created_at: number;
-  updated_at: number;
-}
+  export interface Account {
+    uuid: string;
+  }
 
-export interface Account {
-  uuid: string;
-}
+  export interface State {
+    brightness?: number;
+    selector: string;
+    color?: Color;
+  }
 
-export interface State {
-  brightness?: number;
-  selector:    string;
-  color?:      Color;
-}
+  export interface cleanParams {
+    stop?: boolean;
+    duration?: number;
+  }
 
-export interface sceneParams {
-  duration: number;
-  fast:     boolean;
-}
+  export interface sceneParams {
+    duration?: number;
+    ignore?: string[];
+    overides?: lightStateParam;
+    fast?: boolean;
+  }
 }
 
 export interface CssColor {

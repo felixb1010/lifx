@@ -28,10 +28,17 @@
       "mode": "view"
     },
     {
-      "name": "toggleLight",
-      "title": "Toggle All lights",
+      "name": "turnOnAllLights",
+      "title": "Turn On All Lights",
       "subtitle": "LIFX",
-      "description": "Turn on or off on of your lifx light or lights",
+      "description": "Turn on your lifx lights",
+      "mode": "no-view"
+    },
+    {
+      "name": "turnOffAllLights",
+      "title": "Turn Off All Lights",
+      "subtitle": "LIFX",
+      "description": "Turn off your lifx lights",
       "mode": "no-view"
     }
   ],
