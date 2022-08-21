@@ -2,10 +2,10 @@ import { ActionPanel, Color, Cache, List, Action, showToast, Toast, getPreferenc
 import { getProgressIcon } from "@raycast/utils";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Lights } from "./lib/interfaces";
+import { Api, Lights } from "./lib/interfaces";
 import { getKelvinIcon, getLightIcon } from "./lib/colorAlgos";
-import constants, { COLORS } from "./lib/constants";
-import { cleanLights, SetLightState, toggleLight } from "./lib/api";
+import constants, { COLORS, effects } from "./lib/constants";
+import { cleanLights, SetEffect, SetLightState, toggleLight } from "./lib/api";
 
 export default function Command() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -162,6 +162,28 @@ export default function Command() {
     }
   }
 
+  async function setEffect(uuid: string, effect: Api.effectType) {
+    const toast = await showToast({
+      style: Toast.Style.Animated,
+      title: "Setting Effect",
+    });
+    try {
+      await SetEffect(uuid, effect, {color: "blue"}, config);
+      toast.style = Toast.Style.Success;
+      toast.title = "Effect Set";
+    } catch (error) {
+      console.log(error);
+      toast.style = Toast.Style.Failure;
+      toast.title = "Error";
+      toast.primaryAction = {title: "Retry", onAction(toast) {
+        setEffect(uuid, effect);
+      },};
+      if (error instanceof Error) {
+        toast.message = error.message;
+      }
+    }
+  }
+
   useEffect(() => {
     fetchLights();
   }, []);
@@ -217,7 +239,7 @@ export default function Command() {
               actions={
                 <ActionPanel title="Manage Light">
                   <Action icon={Icon.Power} title="Toggle Power" onAction={() => togglePowerLight(light.id)} />
-                  <ActionPanel.Submenu icon={Icon.CircleProgress} title="Set Brightness">
+                  <ActionPanel.Submenu title="􀆭   Set Brightness">
                     {constants.brightness.map((brightness) => (
                       <Action
                         key={brightness}
@@ -240,7 +262,7 @@ export default function Command() {
                     onAction={() => setBrightness(light.id, light.brightness - 0.1)}
                   />
                   <ActionPanel.Section />
-                  <ActionPanel.Submenu icon={Icon.Swatch} title="Set Color">
+                  <ActionPanel.Submenu title="􀎑   Set Color">
                     {COLORS.map((color) => (
                       <Action
                         icon={{ source: Icon.CircleFilled, tintColor: color.value }}
@@ -251,8 +273,18 @@ export default function Command() {
                       />
                     ))}
                   </ActionPanel.Submenu>
+                  <ActionPanel.Submenu title="􀆿   Set Effect">
+                    {effects.map((effect) => (
+                      <Action
+                        title={effect.name}
+                        onAction={() => {
+                          setEffect(light.id, effect.value);
+                        }}
+                      />
+                    ))}
+                  </ActionPanel.Submenu>
                   <ActionPanel.Section />
-                  <ActionPanel.Submenu icon={Icon.Swatch} title="Set Color Temprature">
+                  <ActionPanel.Submenu title="􀇬   Set Color Temprature">
                     {constants.kelvins.map((kelvin) => (
                       <Action
                         key={kelvin}
