@@ -13,3 +13,8 @@
 - Added huge improvements to `Manage Lights` command
 - Fixed some bugs
 - Rewrote the api handling and error handling
+
+## [Version 1.2.3] - 2022-08-23
+- Removed some effects
+- Fixed some bugs
+- Added a color icon for lights
