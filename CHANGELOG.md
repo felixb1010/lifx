@@ -18,3 +18,7 @@
 - Removed some effects
 - Fixed some bugs
 - Added a color icon for lights
+
+## [Version 1.2.4] - 2022-08-23
+- Added capabilites to sidebar
+- Added keywords for better search

@@ -1,7 +1,6 @@
 import { ActionPanel, Color, Cache, List, Action, showToast, Toast, getPreferenceValues, Icon } from "@raycast/api";
 import { getProgressIcon } from "@raycast/utils";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Api, Lights } from "./lib/interfaces";
 import { getHueIcon, getKelvinIcon, getLightIcon, parseDate } from "./lib/colorAlgos";
 import constants, { COLORS, effects } from "./lib/constants";
@@ -59,6 +58,7 @@ export default function Command() {
     });
     try {
       await toggleLight(id, { duration: 1 }, config);
+      updateState(id, 0.01);
       toast.style = Toast.Style.Success;
       toast.title = "Light toggled";
     } catch (error) {
@@ -227,11 +227,13 @@ export default function Command() {
         />
       ) : (
         data.map((light: Lights.Light, index) => (
-          <List.Section key={index} title={light.group.name}>
+    
             <List.Item
               key={light.id}
               icon={getLightIcon(light)}
               title={light.label}
+              subtitle={light.group.name}
+              keywords={[light.label, light.group.name, light.product.name]}
               detail={
                 <List.Item.Detail
                   metadata={
@@ -264,6 +266,13 @@ export default function Command() {
                       />
                       <List.Item.Detail.Metadata.Label title="ID" text={light.id} />
                       <List.Item.Detail.Metadata.Label title="UUID" text={light.uuid} />
+                      <List.Item.Detail.Metadata.TagList title="Capabilities">
+                       {light.product.capabilities.has_color && <List.Item.Detail.Metadata.TagList.Item text="Color" color={Color.Blue}/>}
+                       {light.product.capabilities.has_ir && <List.Item.Detail.Metadata.TagList.Item text="IR" color={Color.Blue}/>}
+                       {light.product.capabilities.has_multizone && <List.Item.Detail.Metadata.TagList.Item text="Multizone" color={Color.Blue}/>}
+                       {light.product.capabilities.has_variable_color_temp && <List.Item.Detail.Metadata.TagList.Item text="Var Temp" color={Color.Blue}/>}
+                       {light.product.capabilities.has_chain && <List.Item.Detail.Metadata.TagList.Item text="Chain" color={Color.Blue}/>}
+                      </List.Item.Detail.Metadata.TagList>
                     </List.Item.Detail.Metadata>
                   }
                 />
@@ -367,7 +376,7 @@ export default function Command() {
                 </ActionPanel>
               }
             />
-          </List.Section>
+         
         ))
       )}
     </List>
