@@ -58,7 +58,15 @@ export default function viewScenes() {
 
   return (
     <List isLoading={isLoading}>
-      {data &&
+      {data?.length === 0 ? (
+         <List.EmptyView
+         key="empty"
+         icon="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/144/apple/325/thinking-face_1f914.png"
+         title="No scenes found"
+         description="Check if you have any scenes for your lights"
+       />
+      ):
+      ( data && 
         data.map((scene) => (
           <List.Item
             key={scene.uuid}
@@ -69,7 +77,9 @@ export default function viewScenes() {
               </ActionPanel>
             }
           />
-        ))}
+        ))
+      )
+      }
     </List>
   );
 }
