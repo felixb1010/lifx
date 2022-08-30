@@ -227,156 +227,161 @@ export default function Command() {
         />
       ) : (
         data.map((light: Lights.Light, index) => (
-    
-            <List.Item
-              key={light.id}
-              icon={getLightIcon(light)}
-              title={light.label}
-              subtitle={light.group.name}
-              keywords={[light.label, light.group.name, light.product.name]}
-              detail={
-                <List.Item.Detail
-                  metadata={
-                    <List.Item.Detail.Metadata>
-                      <List.Item.Detail.Metadata.Label title="Product Model" text={light.product.name} />
-                      <List.Item.Detail.Metadata.Separator />
-                      <List.Item.Detail.Metadata.Label
-                        title="Hue"
-                        icon={getHueIcon(light.color.hue)}
-                        text={light.color.hue.toString()}
-                      />
-                      <List.Item.Detail.Metadata.Label
-                        icon={getKelvinIcon(light.color.kelvin)}
-                        title="Kelvin"
-                        text={light.color.kelvin.toString()}
-                      />
-                      <List.Item.Detail.Metadata.Label
-                        title="Brightness"
-                        icon={getProgressIcon(light.brightness, Color.SecondaryText)}
-                        text={light.brightness.toString()}
-                      />
-                      <List.Item.Detail.Metadata.Separator />
-                      <List.Item.Detail.Metadata.Label title="Group" text={light.group.name} />
-                      <List.Item.Detail.Metadata.Label title="Location" text={light.location.name} />
-                      <List.Item.Detail.Metadata.Label title="Last Seen" text={parseDate(light.last_seen)} />
-                      <List.Item.Detail.Metadata.Separator />
-                      <List.Item.Detail.Metadata.Label
-                        title="Connected"
-                        text={light.connected ? "Online" : "Offline"}
-                      />
-                      <List.Item.Detail.Metadata.Label title="ID" text={light.id} />
-                      <List.Item.Detail.Metadata.Label title="UUID" text={light.uuid} />
-                      <List.Item.Detail.Metadata.TagList title="Capabilities">
-                       {light.product.capabilities.has_color && <List.Item.Detail.Metadata.TagList.Item text="Color" color={Color.Blue}/>}
-                       {light.product.capabilities.has_ir && <List.Item.Detail.Metadata.TagList.Item text="IR" color={Color.Blue}/>}
-                       {light.product.capabilities.has_multizone && <List.Item.Detail.Metadata.TagList.Item text="Multizone" color={Color.Blue}/>}
-                       {light.product.capabilities.has_variable_color_temp && <List.Item.Detail.Metadata.TagList.Item text="Var Temp" color={Color.Blue}/>}
-                       {light.product.capabilities.has_chain && <List.Item.Detail.Metadata.TagList.Item text="Chain" color={Color.Blue}/>}
-                      </List.Item.Detail.Metadata.TagList>
-                    </List.Item.Detail.Metadata>
-                  }
+          <List.Item
+            key={light.id}
+            icon={getLightIcon(light)}
+            title={light.label}
+            subtitle={light.group.name}
+            keywords={[light.label, light.group.name, light.product.name]}
+            detail={
+              <List.Item.Detail
+                metadata={
+                  <List.Item.Detail.Metadata>
+                    <List.Item.Detail.Metadata.Label title="Product Model" text={light.product.name} />
+                    <List.Item.Detail.Metadata.Separator />
+                    <List.Item.Detail.Metadata.Label
+                      title="Hue"
+                      icon={getHueIcon(light.color.hue)}
+                      text={light.color.hue.toString()}
+                    />
+                    <List.Item.Detail.Metadata.Label
+                      icon={getKelvinIcon(light.color.kelvin)}
+                      title="Kelvin"
+                      text={light.color.kelvin.toString()}
+                    />
+                    <List.Item.Detail.Metadata.Label
+                      title="Brightness"
+                      icon={getProgressIcon(light.brightness, Color.SecondaryText)}
+                      text={light.brightness.toString()}
+                    />
+                    <List.Item.Detail.Metadata.Separator />
+                    <List.Item.Detail.Metadata.Label title="Group" text={light.group.name} />
+                    <List.Item.Detail.Metadata.Label title="Location" text={light.location.name} />
+                    <List.Item.Detail.Metadata.Label title="Last Seen" text={parseDate(light.last_seen)} />
+                    <List.Item.Detail.Metadata.Separator />
+                    <List.Item.Detail.Metadata.Label title="Connected" text={light.connected ? "Online" : "Offline"} />
+                    <List.Item.Detail.Metadata.Label title="ID" text={light.id} />
+                    <List.Item.Detail.Metadata.Label title="UUID" text={light.uuid} />
+                    <List.Item.Detail.Metadata.TagList title="Capabilities">
+                      {light.product.capabilities.has_color && (
+                        <List.Item.Detail.Metadata.TagList.Item text="Color" color={Color.Blue} />
+                      )}
+                      {light.product.capabilities.has_ir && (
+                        <List.Item.Detail.Metadata.TagList.Item text="IR" color={Color.Blue} />
+                      )}
+                      {light.product.capabilities.has_multizone && (
+                        <List.Item.Detail.Metadata.TagList.Item text="Multizone" color={Color.Blue} />
+                      )}
+                      {light.product.capabilities.has_variable_color_temp && (
+                        <List.Item.Detail.Metadata.TagList.Item text="Var Temp" color={Color.Blue} />
+                      )}
+                      {light.product.capabilities.has_chain && (
+                        <List.Item.Detail.Metadata.TagList.Item text="Chain" color={Color.Blue} />
+                      )}
+                    </List.Item.Detail.Metadata.TagList>
+                  </List.Item.Detail.Metadata>
+                }
+              />
+            }
+            actions={
+              <ActionPanel title="Manage Light">
+                <Action
+                  icon={Icon.Power}
+                  title={light.power === "on" ? "Toggle Off" : "Toggle On"}
+                  onAction={() => togglePowerLight(light.id)}
                 />
-              }
-              actions={
-                <ActionPanel title="Manage Light">
-                  <Action
-                    icon={Icon.Power}
-                    title={light.power === "on" ? "Toggle Off" : "Toggle On"}
-                    onAction={() => togglePowerLight(light.id)}
-                  />
-                  <ActionPanel.Submenu title="􀆭   Set Brightness">
-                    {constants.brightness.map((brightness) => (
-                      <Action
-                        key={brightness}
-                        icon={getProgressIcon(brightness / 100, Color.Blue)}
-                        title={brightness.toString() + "% Brightness"}
-                        onAction={() => {
-                          setBrightness(light.id, brightness);
-                        }}
-                      />
-                    ))}
-                  </ActionPanel.Submenu>
-                  {light.brightness < 0.9 && (
+                <ActionPanel.Submenu title="􀆭   Set Brightness">
+                  {constants.brightness.map((brightness) => (
                     <Action
-                      icon={Icon.Plus}
-                      title="Increase Brightness"
-                      onAction={() => setBrightness(light.id, light.brightness * 100 + 10)}
+                      key={brightness}
+                      icon={getProgressIcon(brightness / 100, Color.Blue)}
+                      title={brightness.toString() + "% Brightness"}
+                      onAction={() => {
+                        setBrightness(light.id, brightness);
+                      }}
                     />
-                  )}
-                  {light.brightness > 0.1 && (
+                  ))}
+                </ActionPanel.Submenu>
+                {light.brightness < 0.9 && (
+                  <Action
+                    icon={Icon.Plus}
+                    title="Increase Brightness"
+                    onAction={() => setBrightness(light.id, light.brightness * 100 + 10)}
+                  />
+                )}
+                {light.brightness > 0.1 && (
+                  <Action
+                    icon={Icon.Minus}
+                    title="Decrease Brightness"
+                    onAction={() => setBrightness(light.id, light.brightness * 100 - 10)}
+                  />
+                )}
+                <ActionPanel.Section />
+                {light.product.capabilities.has_color === true && (
+                  <ActionPanel.Submenu title="􀎑   Set Color">
+                    {COLORS.map((color) => (
+                      <Action
+                        icon={{ source: Icon.CircleFilled, tintColor: color.value }}
+                        title={color.name}
+                        onAction={() => {
+                          setLightColor(color.value, light.id);
+                        }}
+                      />
+                    ))}
+                  </ActionPanel.Submenu>
+                )}
+                <ActionPanel.Submenu title="􀆿   Set Effect">
+                  {effects.map((effect) => (
                     <Action
-                      icon={Icon.Minus}
-                      title="Decrease Brightness"
-                      onAction={() => setBrightness(light.id, light.brightness * 100 - 10)}
+                      title={effect.name}
+                      onAction={() => {
+                        setEffect(light.id, effect.value);
+                      }}
                     />
-                  )}
-                  <ActionPanel.Section />
-                  {light.product.capabilities.has_color === true && (
-                    <ActionPanel.Submenu title="􀎑   Set Color">
-                      {COLORS.map((color) => (
-                        <Action
-                          icon={{ source: Icon.CircleFilled, tintColor: color.value }}
-                          title={color.name}
-                          onAction={() => {
-                            setLightColor(color.value, light.id);
-                          }}
-                        />
-                      ))}
-                    </ActionPanel.Submenu>
-                  )}
-                  <ActionPanel.Submenu title="􀆿   Set Effect">
-                    {effects.map((effect) => (
-                      <Action
-                        title={effect.name}
-                        onAction={() => {
-                          setEffect(light.id, effect.value);
-                        }}
-                      />
-                    ))}
-                  </ActionPanel.Submenu>
-                  <Action
-                    key="ToggleEffect"
-                    icon={Icon.Power}
-                    title="Turn off effect"
-                    onAction={() => setEffect(light.id, Api.effectType.off)}
-                  />
-                  <ActionPanel.Section />
-                  <ActionPanel.Submenu title="􀇬   Set Kelvin">
-                    {constants.kelvins.map((kelvin) => (
-                      <Action
-                        key={kelvin}
-                        icon={getKelvinIcon(kelvin)}
-                        title={kelvin.toString() + "K"}
-                        onAction={() => {
-                          setLightTemp(kelvin, light.id);
-                        }}
-                      />
-                    ))}
-                  </ActionPanel.Submenu>
-                  <Action
-                    key="Increase Kelvin"
-                    icon={Icon.Plus}
-                    title="Increase Color Temprature"
-                    onAction={() => addlightTemp(true, light.color.kelvin, light.id)}
-                  />
-                  <Action
-                    key="Decrease Kelvin"
-                    icon={Icon.Plus}
-                    title="Decrease Color Temprature"
-                    onAction={() => addlightTemp(false, light.color.kelvin, light.id)}
-                  />
-                  <ActionPanel.Section />
-                  <Action
-                    key="sidebar"
-                    icon={Icon.Sidebar}
-                    title={sideBar ? "Hide SideBar" : "Show SideBar"}
-                    onAction={() => setSideBar((sideBar) => !sideBar)}
-                  />
-                  <Action key="Clean" icon={Icon.Bolt} title="Clean" onAction={() => cleanLight(light.id)} />
-                </ActionPanel>
-              }
-            />
-         
+                  ))}
+                </ActionPanel.Submenu>
+                <Action
+                  key="ToggleEffect"
+                  icon={Icon.Power}
+                  title="Turn off effect"
+                  onAction={() => setEffect(light.id, Api.effectType.off)}
+                />
+                <ActionPanel.Section />
+                <ActionPanel.Submenu title="􀇬   Set Kelvin">
+                  {constants.kelvins.map((kelvin) => (
+                    <Action
+                      key={kelvin}
+                      icon={getKelvinIcon(kelvin)}
+                      title={kelvin.toString() + "K"}
+                      onAction={() => {
+                        setLightTemp(kelvin, light.id);
+                      }}
+                    />
+                  ))}
+                </ActionPanel.Submenu>
+                <Action
+                  key="Increase Kelvin"
+                  icon={Icon.Plus}
+                  title="Increase Color Temprature"
+                  onAction={() => addlightTemp(true, light.color.kelvin, light.id)}
+                />
+                <Action
+                  key="Decrease Kelvin"
+                  icon={Icon.Plus}
+                  title="Decrease Color Temprature"
+                  onAction={() => addlightTemp(false, light.color.kelvin, light.id)}
+                />
+                <ActionPanel.Section />
+                <Action
+                  key="sidebar"
+                  icon={Icon.Sidebar}
+                  title={sideBar ? "Hide SideBar" : "Show SideBar"}
+                  onAction={() => setSideBar((sideBar) => !sideBar)}
+                />
+                <Action key="Clean" icon={Icon.Bolt} title="Clean" onAction={() => cleanLight(light.id)} />
+              </ActionPanel>
+            }
+          />
         ))
       )}
     </List>

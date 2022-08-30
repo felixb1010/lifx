@@ -5,7 +5,7 @@ import { Api, Lights } from "./interfaces";
 export async function FetchLights(config: AxiosRequestConfig) {
   const cache = new Cache();
   try {
-    if(cache.has("lights")) {
+    if (cache.has("lights")) {
       return JSON.parse(cache.get("lights") || "");
     }
     const result = await axios.get("https://api.lifx.com/v1/lights/all", config);
