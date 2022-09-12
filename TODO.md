@@ -9,4 +9,4 @@
 - [ ] Add timeout to api request
 - [ ] Improve ReadMe
 - [ ] Add description to effect
-- [ ] Conditonaly show turn off effect
+- [ ] Migrate to openapi
