@@ -5,6 +5,7 @@ import { Api, Lights } from "./lib/interfaces";
 import { getHueIcon, getKelvinIcon, getLightIcon, parseDate } from "./lib/colorAlgos";
 import constants, { COLORS, effects } from "./lib/constants";
 import { cleanLights, SetEffect, SetLightState, toggleLight, FetchLights, checkApiKey } from "./lib/api";
+import DiscoverLights from "./lib/lan-api";
 const hexToHsl = require("hex-to-hsl");
 
 export default function Command() {
@@ -22,8 +23,10 @@ export default function Command() {
   };
 
   async function fetchLights() {
+   
     console.info(data);
     try {
+      DiscoverLights()
       const isTokenValid = await checkApiKey();
       if (!isTokenValid) {
         await showToast({
