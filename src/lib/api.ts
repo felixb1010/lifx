@@ -1,6 +1,7 @@
-import { getPreferenceValues, Cache } from "@raycast/api";
+import { getPreferenceValues } from "@raycast/api";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { Api, Lights } from "./interfaces";
+
 
 export async function FetchLights(config: AxiosRequestConfig) {
   try {
